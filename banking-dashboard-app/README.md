@@ -58,8 +58,3 @@ banking-dashboard-app
 - Use the login page to authenticate or register a new user.
 - Navigate to the dashboard to view account details and perform fund transfers.
 
-## Contributing
-Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
-
-## License
-This project is licensed under the MIT License.
