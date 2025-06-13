@@ -1,0 +1,75 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{92B3E6A7-BE81-14C6-D8C7-3B614F87E1FD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>banking_dashboard_app</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BankingDashboard.API\appsettings.json" />
+    <None Include="BankingDashboard.Client\App.razor" />
+    <None Include="BankingDashboard.Client\Pages\Accounts.razor" />
+    <None Include="BankingDashboard.Client\Pages\Dashboard.razor" />
+    <None Include="BankingDashboard.Client\Pages\Login.razor" />
+    <None Include="BankingDashboard.Client\Pages\Transfer.razor" />
+    <None Include="BankingDashboard.Client\Shared\MainLayout.razor" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BankingDashboard.API\Controllers\AccountController.cs" />
+    <Compile Include="BankingDashboard.API\Controllers\AuthController.cs" />
+    <Compile Include="BankingDashboard.API\Controllers\TransferController.cs" />
+    <Compile Include="BankingDashboard.API\Data\BankingContext.cs" />
+    <Compile Include="BankingDashboard.API\Models\Account.cs" />
+    <Compile Include="BankingDashboard.API\Models\Transfer.cs" />
+    <Compile Include="BankingDashboard.API\Models\User.cs" />
+    <Compile Include="BankingDashboard.API\Program.cs" />
+    <Compile Include="BankingDashboard.API\Services\AccountService.cs" />
+    <Compile Include="BankingDashboard.API\Services\AuthService.cs" />
+    <Compile Include="BankingDashboard.API\Services\TransferService.cs" />
+    <Compile Include="BankingDashboard.Client\Program.cs" />
+    <Compile Include="BankingDashboard.Client\Services\AccountService.cs" />
+    <Compile Include="BankingDashboard.Client\Services\AuthService.cs" />
+    <Compile Include="BankingDashboard.Client\Services\TransferService.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

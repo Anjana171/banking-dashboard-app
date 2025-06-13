@@ -1,0 +1,50 @@
+@page "/dashboard"
+@inject AccountService AccountService
+@inject TransferService TransferService
+
+<h3>Dashboard</h3>
+
+<div>
+    <h4>Your Accounts</h4>
+    <ul>
+        @if (accounts != null && accounts.Any())
+        {
+            foreach (var account in accounts)
+            {
+                <li>@account.AccountType: @account.Balance.ToString("C")</li>
+            }
+        }
+        else
+        {
+            <li>No accounts found.</li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h4>Recent Transactions</h4>
+    <ul>
+        @if (transactions != null && transactions.Any())
+        {
+            foreach (var transaction in transactions)
+            {
+                <li>@transaction.TransferDate.ToShortDateString() - @transaction.Amount.ToString("C") from @transaction.FromAccountId to @transaction.ToAccountId</li>
+            }
+        }
+        else
+        {
+            <li>No recent transactions.</li>
+        }
+    </ul>
+</div>
+
+@code {
+    private List<Account> accounts;
+    private List<Transfer> transactions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await AccountService.GetAccountsAsync();
+        transactions = await TransferService.GetRecentTransfersAsync();
+    }
+}

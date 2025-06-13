@@ -1,0 +1,104 @@
+@page "/transfer"
+@inject TransferService TransferService
+@inject AccountService AccountService
+@inject NavigationManager NavigationManager
+
+<h3>Transfer Funds</h3>
+
+@if (isLoading)
+{
+    <p>Loading accounts...</p>
+}
+else
+{
+    <EditForm Model="transferModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div>
+            <label for="fromAccount">From Account:</label>
+            <select id="fromAccount" @bind="transferModel.FromAccountId">
+                <option value="">Select an account</option>
+                @foreach (var account in accounts)
+                {
+                    <option value="@account.Id">@account.AccountType - @account.Balance.ToString("C")</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => transferModel.FromAccountId)" />
+        </div>
+
+        <div>
+            <label for="toAccount">To Account:</label>
+            <select id="toAccount" @bind="transferModel.ToAccountId">
+                <option value="">Select an account</option>
+                @foreach (var account in accounts)
+                {
+                    <option value="@account.Id">@account.AccountType - @account.Balance.ToString("C")</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => transferModel.ToAccountId)" />
+        </div>
+
+        <div>
+            <label for="amount">Amount:</label>
+            <InputNumber id="amount" @bind-Value="transferModel.Amount" />
+            <ValidationMessage For="@(() => transferModel.Amount)" />
+        </div>
+
+        <button type="submit">Transfer</button>
+    </EditForm>
+}
+
+@if (successMessage != null)
+{
+    <p class="text-success">@successMessage</p>
+}
+
+@if (errorMessage != null)
+{
+    <p class="text-danger">@errorMessage</p>
+}
+
+@code {
+    private TransferModel transferModel = new TransferModel();
+    private List<AccountModel> accounts = new List<AccountModel>();
+    private bool isLoading = true;
+    private string successMessage;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await AccountService.GetAccountsAsync();
+        isLoading = false;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await TransferService.TransferFundsAsync(transferModel);
+            successMessage = "Transfer successful!";
+            errorMessage = null;
+            transferModel = new TransferModel(); // Reset the form
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Transfer failed: " + ex.Message;
+            successMessage = null;
+        }
+    }
+
+    public class TransferModel
+    {
+        public int FromAccountId { get; set; }
+        public int ToAccountId { get; set; }
+        public decimal Amount { get; set; }
+    }
+
+    public class AccountModel
+    {
+        public int Id { get; set; }
+        public string AccountType { get; set; }
+        public decimal Balance { get; set; }
+    }
+}

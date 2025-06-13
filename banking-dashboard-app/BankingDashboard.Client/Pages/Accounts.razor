@@ -1,0 +1,68 @@
+@page "/accounts"
+@inject AccountService AccountService
+@inject NavigationManager NavigationManager
+
+<h3>Your Accounts</h3>
+
+@if (accounts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (accounts.Count == 0)
+{
+    <p>No accounts found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Account ID</th>
+                <th>Account Type</th>
+                <th>Balance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in accounts)
+            {
+                <tr>
+                    <td>@account.Id</td>
+                    <td>@account.AccountType</td>
+                    <td>@account.Balance.ToString("C")</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditAccount(account.Id)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteAccount(account.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-success" @onclick="CreateAccount">Create New Account</button>
+
+@code {
+    private List<Account> accounts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await AccountService.GetAccountsAsync();
+    }
+
+    private void EditAccount(int accountId)
+    {
+        NavigationManager.NavigateTo($"/edit-account/{accountId}");
+    }
+
+    private async Task DeleteAccount(int accountId)
+    {
+        await AccountService.DeleteAccountAsync(accountId);
+        accounts = await AccountService.GetAccountsAsync();
+    }
+
+    private void CreateAccount()
+    {
+        NavigationManager.NavigateTo("/create-account");
+    }
+}
